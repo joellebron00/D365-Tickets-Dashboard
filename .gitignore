@@ -1,0 +1,14 @@
+# Never commit ticket exports or rosters — they contain employee data
+*.csv
+*.xlsx
+*.xls
+
+
+# Secrets (passwords) stay local / in Streamlit Cloud secrets
+.streamlit/secrets.toml
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/

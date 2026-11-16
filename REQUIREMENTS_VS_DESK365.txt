@@ -1,0 +1,127 @@
+WORKPLACE CONCERNS ANALYTICS
+Requirements from the brief vs. what the Desk365 export supports today
+=====================================================================
+
+Source: Desk365 ticket-list export (Tkt_Lst_Created_Time_<Mon>_01_<yyyy>_to_<Mon>_31_<yyyy>.csv).
+Status legend: AVAILABLE = covered with the current export | PROXY / PARTIAL = covered indirectly
+or in part | GAP = not possible until new data is captured.
+
+---------------------------------------------------------------------
+1. Trends by concern category and subcategory
+---------------------------------------------------------------------
+Status:           AVAILABLE
+Today:            Category / SubCategory come in the export. The dashboard shows tickets per
+                  week by category, a drill-down into subcategories, and the top category >
+                  subcategory pairs (Overview and Categories & themes tabs).
+What to add:      An ER-specific branch in the taxonomy. Today "HR - Policy & General HR > Other"
+                  is a catch-all, so most Workplace Concerns are not distinguishable from general
+                  HR requests. Category and SubCategory are assigned at close, not at intake, so
+                  open cases are uncategorised; make them required at intake for ER cases.
+
+---------------------------------------------------------------------
+2. Repeat themes tied to policies, processes, programs or manager practices
+---------------------------------------------------------------------
+Status:           PROXY / PARTIAL
+Today:            Rule-based theme tags read the subject and description of each ticket and
+                  surface recurring topics (I-9 / work authorization, ADP / timekeeping, pay,
+                  manager / leadership, conduct / complaint language, etc.) independently of
+                  the agent's categorisation. A conduct-language watch list flags tickets to
+                  review. The Overview counts repeat requesters (2+ tickets).
+What to add:      Structured fields captured at intake / review: Concern type, Related policy or
+                  process, Manager involved (Y/N), and Root cause (set at close). Text mining is a
+                  second lens, not a replacement for these fields.
+
+---------------------------------------------------------------------
+3. Volume by business area, department, location or client program
+---------------------------------------------------------------------
+Status:           PROXY / PARTIAL
+Today:            Client Program is populated in the export (~94% of tickets) and is used in the
+                  heat maps and filters. The export has NO employee department, location, state,
+                  business area or manager: the "Department", "Direct Manager" and "Job Title"
+                  form fields come out empty.
+What to add:      Capture Department, Location / State and Business Area on the Workplace
+                  Concerns form (dropdowns), or join the tickets to an employee roster by email
+                  (ADP / Sage) in a later phase.
+
+---------------------------------------------------------------------
+4. Time to intake, review and resolution
+---------------------------------------------------------------------
+Status:           AVAILABLE
+Today:            Created -> First Assigned (intake), Created -> First Replied (review) and
+                  Created -> Resolved (resolution), shown in business hours (Desk365 clock,
+                  Mon-Fri 08:00-18:00) and in calendar hours (what the employee experiences).
+                  The Timeliness tab also shows where the clock runs (Open = handling vs
+                  Pending = waiting) and the aging of the active backlog.
+What to add:      Agree what intake, review and resolution mean for a concern (e.g. intake =
+                  acknowledged, review = investigation started, resolution = employee informed)
+                  and add status values or date fields that match those stages.
+
+---------------------------------------------------------------------
+5. Escalation trends
+---------------------------------------------------------------------
+Status:           GAP
+Today:            Desk365 has no escalation field. Priority Urgent / High is reported as what it
+                  is (the share of tickets with Urgent or High priority), not as an escalation
+                  measure.
+What to add:      "Escalated to" (None / HR Lead / Legal / Leadership / Client) and
+                  "Escalation date" fields, or an "Escalated" status, so escalations can be
+                  counted and trended.
+
+---------------------------------------------------------------------
+6. Heat maps of recurring concerns / hotspots
+---------------------------------------------------------------------
+Status:           PROXY / PARTIAL
+Today:            Heat maps of category x client program, category x requester type,
+                  category x assigned agent, intake timing (weekday x hour) and agent x
+                  category (Hotspots and Workload tabs).
+What to add:      Manager, location and department heat maps need the fields in item 3. Keep a
+                  minimum cell size (e.g. 3 tickets) when reporting on small groups to protect
+                  confidentiality.
+
+---------------------------------------------------------------------
+7. Identification of training, communication, policy or process improvement opportunities
+---------------------------------------------------------------------
+Status:           PROXY / PARTIAL
+Today:            The theme x category heat map shows where generic categories hide specific
+                  topics; the handling-vs-waiting analysis shows where tickets wait; the
+                  per-category SLA view shows where the process struggles.
+What to add:      An "Outcome / resolution code" at close (coaching, training, policy update,
+                  process fix, no action, referred...) and a "Root cause" field, so improvements
+                  can be measured rather than inferred.
+
+---------------------------------------------------------------------
+8. Monthly trend reporting, especially during TTL ramp-ups
+---------------------------------------------------------------------
+Status:           PROXY / PARTIAL
+Today:            The dashboard reads the most recent monthly export from the shared Drive
+                  folder automatically and reports the month by day and by week. Month-over-
+                  month comparison is not shown because only the latest file is read.
+What to add:      Keep every monthly export in the Drive folder with the standard name and
+                  date range (one calendar month per file). Reading all files, de-duplicated by
+                  Ticket Number, would enable month-over-month trends without any change in
+                  Desk365. Later, automate the feed with the Desk365 API or Power BI.
+
+---------------------------------------------------------------------
+9. Confidentiality, visibility and accountability
+---------------------------------------------------------------------
+Status:           AVAILABLE
+Today:            Requester names and emails are never shown (a masked ID is used internally);
+                  ticket descriptions are only scanned for themes and never displayed; subject
+                  lines are not displayed; workload is shown per agent as capacity, not as a
+                  ranking. The app is private on Streamlit Community Cloud and reads from a
+                  Drive folder shared only with a service account.
+What to add:      Agree an access model: who sees case detail (Desk365) vs. aggregates (this
+                  dashboard). Consider a separate, restricted Desk365 group for ER cases.
+
+---------------------------------------------------------------------
+Notes on the export itself
+---------------------------------------------------------------------
+- All "* Duration (mins)" and "* Business Hours (mins)" columns are BUSINESS minutes
+  (Mon-Fri 08:00-18:00, 600 min per day). "Open (mins)" and "Pending (mins)" are calendar
+  minutes. The dashboard shows both views.
+- "Completed Within SLA" is the only SLA field; the SLA targets themselves are configured in
+  Desk365 and are not part of the export. Document the targets per priority.
+- Voicemail transcriptions arrive as tickets from the HR call queue without a usable
+  requester identity and are usually filed under a generic category.
+- Spam / non-actionable tickets, automatic replies and vendor / system notifications are
+  excluded from every number in the dashboard.
